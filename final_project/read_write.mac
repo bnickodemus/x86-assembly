@@ -1,0 +1,23 @@
+; arg: 1 - input buffer, 2 - input buffer length, 3 - number of bytes read in
+
+%macro read_input 3
+	mov eax, 3				; syscall 3 (read)
+	mov ebx, 0			; fd 0 (std input)
+	mov ecx, %1			; arg1 (input buffer) stored into buffer to read into
+	mov edx, %2			; arg2 = buffer length
+	int 0x80;				; dispatcher
+
+	;mov byte [%1],'8' hard code '8' into input buffer
+	
+	mov dword [%3], eax;	  eax is thrown into arg3 (# of bytes read in)
+%endmacro
+
+; arg: 1 - output buffer; 2 - output buffer length
+%macro write_output 2
+	mov eax,4				; syscall 4 (write)
+	mov ebx,1				; fd 1 (std output)
+	mov ecx,%1			; arg1 (input buffer) stored into buffer to write
+	mov edx,%2;			; arg2 = buffer length
+	int 0x80				; dispatcher
+%endmacro
+
